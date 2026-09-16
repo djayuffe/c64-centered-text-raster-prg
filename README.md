@@ -1,4 +1,4 @@
-# C64 v10h Text PRG
+# C64 - Centered Text Raster PRG
 
 ![C64 effect preview](docs/preview.png)
 
@@ -21,6 +21,21 @@ preserved under `original/` for provenance.
 
 The source build is documented in `source/` and `AUDIT.md`. Verify tracked
 files with `shasum -a 256 -c SHA256SUMS.txt`.
+
+## Rebuild and run
+
+Requires ACME 0.97 or newer. From `source/`:
+
+```sh
+acme --strict-segments -f cbm -o ../c64_centered_text_raster.prg c64_centered_text_raster.s
+```
+
+Run the corrected image with VICE:
+
+```sh
+x64sc -autostart c64_centered_text_raster.prg
+```
+
 ## Documentation and license
 
 Function-level documentation is in docs/FUNCTIONS.md. The project is released
