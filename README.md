@@ -1,11 +1,11 @@
-# DeepSeek C64 v10h Text PRG
+# C64 v10h Text PRG
 
 Private preservation repository for the supplied C64 program
 the supplied v10h text-mode program.
 
 ## Artifacts
 
-- `deepseek_c64_v10h_text.prg` — corrected rebuild.
+- `c64_centered_text_raster.prg` — corrected rebuild.
 - `original/deepseek_asm_20251009_v10h_text_only_stable_nowarn_v2.prg` — exact supplied binary.
 - `source/` — corrected source and recovered 2 KiB charset input.
 

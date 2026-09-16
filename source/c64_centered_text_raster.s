@@ -1,13 +1,13 @@
 
-; deepseek_c64_v10h_text.s
+; c64_centered_text_raster.s
 ; PAL-safe, single-IRQ rasterbars + tiny SID arpeggio.
 ; Uses your embedded custom 1bpp hires charset at $2000 and prints:
 ;   "UBER CREW" (row 8) and "2025" (row 10) centered in white.
 ;
 ; Build:
-;   acme --strict-segments -I . -f cbm -o deepseek_c64_v10h_text.prg deepseek_c64_v10h_text.s
+;   acme --strict-segments -I . -f cbm -o c64_centered_text_raster.prg c64_centered_text_raster.s
 ; Run:
-;   x64sc -autostart deepseek_c64_v10h_text.prg
+;   x64sc -autostart c64_centered_text_raster.prg
 
 ; ---------------- BASIC stub: 10 SYS6144 ----------------
 * = $0801
