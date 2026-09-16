@@ -17,3 +17,7 @@ preserved under `original/` for provenance.
 
 The source build is documented in `source/` and `AUDIT.md`. Verify tracked
 files with `shasum -a 256 -c SHA256SUMS.txt`.
+## Documentation and license
+
+Function-level documentation is in docs/FUNCTIONS.md. The project is released
+under GPL-3.0; see LICENSE.
