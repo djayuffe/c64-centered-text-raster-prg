@@ -1,5 +1,9 @@
 # C64 v10h Text PRG
 
+![C64 effect preview](docs/preview.png)
+
+Visual preview asset for this effect; run the VICE command below for an emulator capture.
+
 Private preservation repository for the supplied C64 program
 the supplied v10h text-mode program.
 
