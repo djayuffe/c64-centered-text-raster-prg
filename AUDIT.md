@@ -2,7 +2,7 @@
 
 ## Input
 
-- Supplied artifact: `deepseek_asm_20251009_v10h_text_only_stable_nowarn_v2.prg`
+- Supplied artifact: `deepseek_c64_v10h_text.prg`
 - Format: CBM PRG, load address `$0801`
 - BASIC entry: `SYS 6144` (`$1800`)
 - Original SHA-256: `edad9b6da96882446b41cd8eb74984dfd4ddf8d62595ff40173eae3965ed595f`

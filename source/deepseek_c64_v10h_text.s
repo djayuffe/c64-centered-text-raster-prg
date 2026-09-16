@@ -1,13 +1,13 @@
 
-; deepseek_asm_20251009_v10h_text_only_stable_nowarn_v2.s
+; deepseek_c64_v10h_text.s
 ; PAL-safe, single-IRQ rasterbars + tiny SID arpeggio.
 ; Uses your embedded custom 1bpp hires charset at $2000 and prints:
 ;   "UBER CREW" (row 8) and "2025" (row 10) centered in white.
 ;
 ; Build:
-;   acme --strict-segments -I . -f cbm -o v10h_text_only.prg deepseek_asm_20251009_v10h_text_only_stable_nowarn_v2.s
+;   acme --strict-segments -I . -f cbm -o deepseek_c64_v10h_text.prg deepseek_c64_v10h_text.s
 ; Run:
-;   x64sc -autostart v10h_text_only.prg
+;   x64sc -autostart deepseek_c64_v10h_text.prg
 
 ; ---------------- BASIC stub: 10 SYS6144 ----------------
 * = $0801

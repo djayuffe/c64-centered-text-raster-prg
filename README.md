@@ -1,28 +1,19 @@
-# DeepSeek v10h text-only PRG
+# DeepSeek C64 v10h Text PRG
 
 Private preservation repository for the supplied C64 program
-`deepseek_asm_20251009_v10h_text_only_stable_nowarn_v2.prg`.
+the supplied v10h text-mode program.
 
-The binary is a CBM PRG loaded at `$0801`; its BASIC stub invokes `SYS 6144`
-(`$1800`). The exact supplied binary is retained in `original/`. The corrected
-rebuild is generated from the companion source in `source/` and is the tracked
-top-level PRG.
+## Artifacts
 
-## Build
+- `deepseek_c64_v10h_text.prg` — corrected rebuild.
+- `original/deepseek_asm_20251009_v10h_text_only_stable_nowarn_v2.prg` — exact supplied binary.
+- `source/` — corrected source and recovered 2 KiB charset input.
 
-Install ACME 0.97 or newer, then run:
+Both images are CBM PRGs loaded at `$0801`; the BASIC stub invokes `SYS 6144`
+(`$1800`). The top-level image is the corrected build; the supplied image is
+preserved under `original/` for provenance.
 
-```sh
-acme --strict-segments -I source -f cbm \
-  -o deepseek_asm_20251009_v10h_text_only_stable_nowarn_v2.prg \
-  source/deepseek_asm_20251009_v10h_text_only_stable_nowarn_v2.s
-```
+## Verification
 
-The checked-in `source/custom_charset_1bpp.bin` is the 2 KiB charset extracted
-from the supplied PRG, so the build is self-contained and offline.
-
-## Audit
-
-The source audit fixed the missing build input, centered-row state loss, wrong
-character-ROM copy address, incorrect `$D018` screen selection, and unmasked
-CIA interrupt sources. `AUDIT.md` records the exact checks and hashes.
+The source build is documented in `source/` and `AUDIT.md`. Verify tracked
+files with `shasum -a 256 -c SHA256SUMS.txt`.
