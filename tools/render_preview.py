@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (C) 2026 Ulf Bertilsson
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Render a deterministic first-frame preview from the assembled source data.
 
 This does not emulate a C64. It renders the initialized text-mode state used

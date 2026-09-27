@@ -1,0 +1,9 @@
+C64 Centered Text Raster PRG
+Copyright (C) 2026 Ulf Bertilsson
+
+This repository's corrected source, build scripts, documentation, generated
+documentation frame, and release tooling are licensed under the GNU General
+Public License, version 3 or (at your option) any later version.
+
+The supplied historical binary under original/ is retained separately for
+provenance. It is not relicensed by this notice.

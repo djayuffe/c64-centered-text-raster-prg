@@ -12,6 +12,12 @@ the same recovered charset, title positions, per-cell colors, and frame-zero
 raster palette used by the corrected PRG. `tools/render_preview.py` regenerates
 it without substituting unrelated concept art for program output.
 
+Copyright © 2026 Ulf Bertilsson. This project is distributed under the
+[GNU GPLv3 or later](LICENSE). The supplied historical PRG remains separately
+preserved under `original/` for provenance; this repository's corrected source,
+build, documentation, and tooling carry the stated project copyright.
+See [NOTICE](NOTICE) for the scope of that notice.
+
 ## Artifacts
 
 - `c64_centered_text_raster.prg` — corrected, runnable rebuild.
@@ -90,6 +96,19 @@ files with `shasum -a 256 -c SHA256SUMS.txt`.
 included so the documentation image remains reproducible. It is a source-state
 render, not a claim of cycle-accurate emulator capture.
 
+## Continuous integration and releases
+
+Every push and pull request is built with ACME in GitHub Actions. The workflow
+regenerates the documentation frame, confirms the checked-in PRG is exactly
+the reproducible build output, validates every SHA-256 entry, and rejects a
+working tree changed by generation. It publishes the PRG, checksum manifest,
+and documentation frame as CI artifacts.
+
+Pushing an annotated tag beginning with `v` repeats the same validation and
+creates a GitHub Release containing the rebuilt PRG, `SHA256SUMS.txt`, GPLv3
+license, README, and source-derived documentation frame. Releases are only
+created after every reproducibility gate passes.
+
 ## Rebuild and run
 
 Requires ACME 0.97 or newer. From `source/`:
@@ -116,4 +135,4 @@ python3 tools/render_preview.py
 ## Documentation and license
 
 Function-level documentation is in docs/FUNCTIONS.md. The project is released
-under GPL-3.0; see LICENSE.
+under GPL-3.0-or-later; see LICENSE.

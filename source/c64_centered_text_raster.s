@@ -1,5 +1,7 @@
 
 ; c64_centered_text_raster.s
+; Copyright (C) 2026 Ulf Bertilsson
+; SPDX-License-Identifier: GPL-3.0-or-later
 ; PAL-safe, single-IRQ rasterbars + tiny SID arpeggio.
 ; Uses the embedded custom 1bpp text charset at $1000 and prints:
 ;   "UBER CREW" (row 8) and "2025" (row 10) centered in white.

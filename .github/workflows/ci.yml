@@ -1,0 +1,37 @@
+name: Verify C64 build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install ACME cross-assembler
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes acme
+
+      - name: Rebuild and verify all release inputs
+        run: bash tools/verify_release.sh
+
+      - name: Upload verified release candidates
+        uses: actions/upload-artifact@v4
+        with:
+          name: c64-centered-text-raster-prg
+          if-no-files-found: error
+          path: |
+            c64_centered_text_raster.prg
+            SHA256SUMS.txt
+            README.md
+            LICENSE
+            docs/runtime-frame.png
