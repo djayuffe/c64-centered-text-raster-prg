@@ -24,13 +24,15 @@ top level. The supplied image remains under `original/` for provenance.
 - **Logo color gradient:** two 40-column color ramps make the title rows read
   as a wide, repeating highlight rather than static monochrome text.
 - **Raster bars:** one VIC-II raster IRQ per PAL frame performs 16
-  programmed raster-line waits and cycles a blue/cyan/white palette across
-  the upper display.
+  programmed raster-line waits and advances a blue/cyan/white palette across
+  the upper display. The interrupt begins early enough to meet the first
+  raster deadline.
 - **Fine-scroll greeting line:** row 21 uses `$D016` fine scroll; every eighth
   frame shifts the character row and injects the next PETSCII byte from the
   greeting stream.
-- **SID arpeggio:** the IRQ cycles three frequency words on voice 1 and keeps
-  its gate and master volume enabled.
+- **SID arpeggio:** the IRQ cycles three frequency words on voice 1. The
+  program explicitly initializes its ADSR, triangle waveform, gate, and master
+  volume rather than depending on prior SID state.
 
 ## Verification
 

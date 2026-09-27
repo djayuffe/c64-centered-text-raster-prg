@@ -6,7 +6,7 @@
 - Format: CBM PRG, load address `$0801`
 - BASIC entry: `SYS 6144` (`$1800`)
 - Original SHA-256: `edad9b6da96882446b41cd8eb74984dfd4ddf8d62595ff40173eae3965ed595f`
-- Corrected build SHA-256: `21202abf31b544e6fd185ae6d1ffb47f24329ea30512182000a963659f25ad6e`
+- Corrected build SHA-256: `bf2e5f8b7fa5407d1c37ca97a17f779e04caeeb0bca4ea743c38b570d33d053e`
 
 ## Corrective work
 
@@ -24,6 +24,13 @@ The raster handler now advances directly after each programmed low raster
 line. The former `$D011`-MSB wait only completes above line 255, stretching a
 single intended bar across almost an entire frame; removing it restores the
 16-line palette sequence.
+
+The handler now starts at line 32, leaving a full timing margin before its
+first programmed hit at line 50. It offsets the palette lookup by the current
+bar index, so all 16 bands are visible rather than being overwritten with one
+frame-wide color. SID voice 1 is reset to a known ADSR, waveform, gate, and
+frequency before the first frame tick; VIC bank-select pins are explicitly
+configured as CIA2 outputs.
 
 The prior README image was unrelated artwork, not a capture of this program,
 and was removed. A replacement must be a PAL C64 emulator capture of the

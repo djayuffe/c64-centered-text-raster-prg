@@ -15,11 +15,14 @@ CIA interrupt sources before installing its VIC-II raster handler.
 2. `CenterPrintRow` measures each zero-terminated title and uses the screen
    and color row tables to draw it around column 20.
 3. `ColorizeLogo` applies the repeating 16-entry title gradient.
-4. `IRQ_Init` owns the VIC raster interrupt; `RasterIRQ` performs the palette
-   sequence, advances the scroller, and ticks the SID arpeggio once per frame.
+4. `IRQ_Init` schedules an early first interrupt; `RasterIRQ` then has enough
+   time to perform the 16-line palette sequence, advances the scroller, and
+   ticks the SID arpeggio once per frame. Each raster band uses its own
+   frame-offset palette entry.
 5. `ScrollerTick` applies horizontal fine scrolling on row 21 and shifts in a
    new greeting character every eight frames.
-6. `SID_Init` and `SID_Tick` keep SID voice 1 gated while rotating three note
-   frequencies at frame rate.
+6. `SID_Init` clears and configures SID voice 1 (ADSR, triangle waveform,
+   gate, and volume), while `SID_Tick` rotates three note frequencies at frame
+   rate.
 
 See AUDIT.md for repair rationale and SHA256SUMS.txt for provenance.

@@ -28,13 +28,14 @@ MEMPTR      = $d018
 VICIRQEN    = $d01a
 VICIRQFLAG  = $d019
 CIA2_PRA    = $dd00
+CIA2_DDRA   = $dd02
 CIA1_ICR    = $dc0d
 CIA2_ICR    = $dd0d
 
 SCREEN      = $0400
 COLOR       = $d800
-BITMAP      = $2000
 CHARSET     = $1000
+FIRST_RASTER = 32
 
 ; ---------------- Zero Page ----------------
 ZP_SrcLo    = $fb   ; general pointer/param
@@ -74,7 +75,7 @@ ScrollTxt:
 
 
 
-; ---------------- Custom charset for text mode at $2800 ----------------
+; ---------------- Custom charset for text mode at $1000 ----------------
 * = $1000
 !bin "custom_charset_1bpp.bin"
 
@@ -97,6 +98,10 @@ Start:
     and #%11111100
     ora #%00000011
     sta CIA2_PRA
+    ; Make the VIC bank-select bits outputs without disturbing IEC lines.
+    lda CIA2_DDRA
+    ora #%00000011
+    sta CIA2_DDRA
 
     ; Screen=$0400, custom charset=$1000
     lda #$14
@@ -280,53 +285,6 @@ ColorizeRowGrad:
     bne @rep2
     rts
 
-; ---------------- IRQ: single per frame, bars via stable waits ----------------
-
-
-; ---------------- Bitmap mode helpers ----------------
-EnableBitmapTop:
-    ; $D011 bit5=1 (bitmap), keep Y-scroll=3 ($1B|$20=$3B)
-    lda #$3b
-    sta CTRL1
-    ; $D016 multicolor off for HIRES
-    lda #$08
-    sta CTRL2
-    ; $D018: screen=$0400 (nibble=1), bitmap base=$2000 (bit3=1) => $18|$08=$20 ? Actually $18 already selects $0400; set bit3
-    lda #$18
-    sta MEMPTR
-    ; set screen colors to white foreground, background black via $D021
-    jsr SetBitmapColors
-    rts
-
-DisableBitmap:
-    ; back to text mode: $D011=$1B, $D016 keep $08, $D018=$18
-    lda #$1b
-    sta CTRL1
-    lda #$08
-    sta CTRL2
-    lda #$14
-    sta MEMPTR
-    rts
-
-SetBitmapColors:
-    ; Set $D021 black, all screen bytes to $01 (white foreground per cell)
-    lda #0
-    sta BGCOL
-    ldx #0
-@sb:
-    lda #$11              ; hi-nibble background 1? Conservative: use $11 (both nibbles=1 -> white/white)
-    sta $0400,x
-    sta $0500,x
-    sta $0600,x
-    inx
-    bne @sb
-    ldx #232
-@s2:
-    sta $0700,x
-    dex
-    bpl @s2
-    rts
-
 ; ---------------- Bottom scroller (row 21) ----------------
 InitScroller:
     lda #0
@@ -408,7 +366,9 @@ IRQ_Handler:
 @w1: lda RASTER
     cmp RasterLines,x
     bne @w1
-    lda FrameCount
+    txa
+    clc
+    adc FrameCount
     and #$0f
     tay
     lda BarColors,y
@@ -419,7 +379,7 @@ IRQ_Handler:
     cpx #16
     bne @nextbar
 
-    lda #48
+    lda #FIRST_RASTER
     sta RASTER
     lda CTRL1
     and #$7f
@@ -439,7 +399,7 @@ IRQ_Init:
     lda CTRL1
     and #$7f
     sta CTRL1
-    lda #48
+    lda #FIRST_RASTER
     sta RASTER
     lda #$01
     sta VICIRQEN
@@ -451,9 +411,24 @@ IRQ_Init:
 
 ; ---------------- SID (tiny arpeggio) ----------------
 SID_Init:
+    ; Establish a deterministic voice instead of relying on power-on SID state.
+    lda #0
+    sta $d400
+    sta $d401
+    sta $d402
+    sta $d403
+    sta $d404
+    lda #$12
+    sta $d405
+    lda #$f8
+    sta $d406
     lda #$0f
     sta $d418
-    lda #$11
+    lda NoteLo
+    sta $d400
+    lda NoteHi
+    sta $d401
+    lda #$11                ; triangle + gate
     sta $d404
     rts
 
