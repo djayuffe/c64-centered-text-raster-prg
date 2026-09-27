@@ -1,7 +1,7 @@
 
 ; c64_centered_text_raster.s
 ; PAL-safe, single-IRQ rasterbars + tiny SID arpeggio.
-; Uses your embedded custom 1bpp hires charset at $2000 and prints:
+; Uses the embedded custom 1bpp text charset at $1000 and prints:
 ;   "UBER CREW" (row 8) and "2025" (row 10) centered in white.
 ;
 ; Build:
@@ -81,40 +81,7 @@ ScrollTxt:
 
 
 * = $1800
-; ---------------- Copy ROM lower/uppercase charset to $2800 ----------------
-CopyROMLowerTo2800:
-    ; Map in CHAR ROM: $01 = %00110011 ($33)
-    lda $01
-    pha
-    lda #$33
-    sta $01
-
-    ; src=$D000 (character ROM), dst=$2800, 2KB
-    lda #$00
-    sta ZP_SrcLo
-    lda #$d0
-    sta ZP_SrcHi
-    lda #<$2800
-    sta ZP_DstLo
-    lda #>$2800
-    sta ZP_DstHi
-
-    ldx #8
-@page:
-    ldy #0
-@cpy:
-    lda (ZP_SrcLo),y
-    sta (ZP_DstLo),y
-    iny
-    bne @cpy
-    inc ZP_SrcHi
-    inc ZP_DstHi
-    dex
-    bne @page
-
-    pla
-    sta $01
-    rts
+    jmp Start
 
 ; ---------------- Code ----------------
 Start:
@@ -131,7 +98,7 @@ Start:
     ora #%00000011
     sta CIA2_PRA
 
-    ; Screen=$0400, Charset=$2000
+    ; Screen=$0400, custom charset=$1000
     lda #$14
     sta MEMPTR
 
@@ -147,10 +114,6 @@ Start:
 
     jsr ClearScreen
     jsr ClearColor
-
-    jsr CopyROMLowerTo2800
-    lda #$14
-    sta MEMPTR
 
     ; Draw centered text using custom font
     lda #8                      ; row
@@ -177,6 +140,7 @@ Start:
     jsr IRQ_Init
     jsr InitScroller
     jsr ColorizeLogo
+    jsr SID_Init
     cli
 Forever:
     jmp Forever
@@ -444,8 +408,6 @@ IRQ_Handler:
 @w1: lda RASTER
     cmp RasterLines,x
     bne @w1
-@w2: lda CTRL1
-    bpl @w2
     lda FrameCount
     and #$0f
     tay
