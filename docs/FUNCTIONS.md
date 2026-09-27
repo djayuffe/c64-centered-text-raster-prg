@@ -26,3 +26,11 @@ CIA interrupt sources before installing its VIC-II raster handler.
    rate.
 
 See AUDIT.md for repair rationale and SHA256SUMS.txt for provenance.
+
+## Documentation frame
+
+`tools/render_preview.py` decodes the same charset bytes used by the PRG and
+reconstructs the initialized 40×25 screen plus the frame-zero raster palette.
+It emits `docs/runtime-frame.png` at 3× nearest-neighbor scale for legible
+README display. It is intentionally identified as a source-state render rather
+than an emulator screenshot.
